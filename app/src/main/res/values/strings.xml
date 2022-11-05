@@ -14,4 +14,7 @@
     <string name="re_type_password">Re-type Password</string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
+
+    <string name="navigation_drawer_open">open navigation drawer</string>
+    <string name="navigation_drawer_close">close navigation drawer</string>
 </resources>

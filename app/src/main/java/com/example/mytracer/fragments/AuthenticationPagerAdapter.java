@@ -1,4 +1,4 @@
-package com.example.mytracer;
+package com.example.mytracer.fragments;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class AuthenticationPagerAdapter extends FragmentPagerAdapter {
 
-    private ArrayList<Fragment> fragmentList = new ArrayList<>();
+    public ArrayList<Fragment> fragmentList = new ArrayList<>();
 
     public AuthenticationPagerAdapter(@NonNull FragmentManager fm) {
         super(fm);
@@ -26,7 +26,7 @@ public class AuthenticationPagerAdapter extends FragmentPagerAdapter {
         return fragmentList.size();
     }
 
-    void addFragment(Fragment fragment) {
+    public void addFragment(Fragment fragment) {
         fragmentList.add(fragment);
     }
 }

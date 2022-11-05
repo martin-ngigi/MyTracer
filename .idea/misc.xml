@@ -3,12 +3,23 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/MyTracer/app/src/main/res/drawable-v24/headercolor.xml" value="0.1205" />
         <entry key="..\:/Users/Administrator/AndroidStudioProjects/MyTracer/app/src/main/res/drawable/btn_custom.xml" value="0.1" />
         <entry key="..\:/Users/Administrator/AndroidStudioProjects/MyTracer/app/src/main/res/drawable/et_custom.xml" value="0.1" />
         <entry key="..\:/Users/Administrator/AndroidStudioProjects/MyTracer/app/src/main/res/drawable/ic_arrow_left.xml" value="0.1" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/MyTracer/app/src/main/res/layout/activity_home.xml" value="0.16458333333333333" />
         <entry key="..\:/Users/Administrator/AndroidStudioProjects/MyTracer/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/MyTracer/app/src/main/res/layout/content_home.xml" value="0.11354166666666667" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/MyTracer/app/src/main/res/layout/fragment_account.xml" value="0.1" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/MyTracer/app/src/main/res/layout/fragment_home.xml" value="0.1" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/MyTracer/app/src/main/res/layout/fragment_inbox.xml" value="0.1" />
         <entry key="..\:/Users/Administrator/AndroidStudioProjects/MyTracer/app/src/main/res/layout/fragment_login.xml" value="0.25" />
         <entry key="..\:/Users/Administrator/AndroidStudioProjects/MyTracer/app/src/main/res/layout/fragment_register.xml" value="0.25" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/MyTracer/app/src/main/res/layout/fragment_settings.xml" value="0.1" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/MyTracer/app/src/main/res/layout/header_file.xml" value="0.109375" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/MyTracer/app/src/main/res/layout/toolbar.xml" value="0.11354166666666667" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/MyTracer/app/src/main/res/menu/menu.xml" value="0.11354166666666667" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/MyTracer/app/src/main/res/menu/sidemenu.xml" value="0.11354166666666667" />
       </map>
     </option>
   </component>

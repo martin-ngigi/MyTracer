@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".RegisterFragment">
+    tools:context=".fragments.RegisterFragment">
 
 
     <TextView
@@ -91,15 +91,15 @@
         android:id="@+id/et_password"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:hint="@string/password"
+        android:layout_below="@+id/et_email"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="10dp"
-        android:padding="15dp"
-        android:layout_below="@+id/et_email"
-        android:fontFamily="@font/roboto_regular"
-        android:inputType="textPassword"
         android:background="@drawable/et_custom"
+        android:fontFamily="@font/roboto_regular"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        android:padding="15dp"
         android:textSize="15sp" />
 
     <EditText

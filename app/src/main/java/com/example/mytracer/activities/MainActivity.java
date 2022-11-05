@@ -1,4 +1,4 @@
-package com.example.mytracer;
+package com.example.mytracer.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,6 +8,11 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
+
+import com.example.mytracer.R;
+import com.example.mytracer.fragments.AuthenticationPagerAdapter;
+import com.example.mytracer.fragments.LoginFragment;
+import com.example.mytracer.fragments.RegisterFragment;
 
 import java.util.ArrayList;
 
