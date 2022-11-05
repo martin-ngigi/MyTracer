@@ -9,6 +9,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -17,7 +18,7 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.example.mytracer.R;
-import com.example.mytracer.SettingsFragment;
+import com.example.mytracer.fragments.SettingsFragment;
 import com.example.mytracer.fragments.AccountFragment;
 import com.example.mytracer.fragments.HomeFragment;
 import com.example.mytracer.fragments.InboxFragment;

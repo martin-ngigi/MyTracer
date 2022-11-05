@@ -1,4 +1,4 @@
-package com.example.mytracer;
+package com.example.mytracer.fragments;
 
 import android.os.Bundle;
 
@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.mytracer.R;
 
 public class SettingsFragment extends Fragment {
 

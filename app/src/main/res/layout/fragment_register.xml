@@ -139,14 +139,14 @@
             android:id="@+id/et_repassword"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:hint="@string/re_type_password"
+            android:layout_below="@+id/et_password"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:padding="15dp"
-            android:layout_below="@+id/et_password"
-            android:fontFamily="@font/roboto_regular"
-            android:inputType="textPassword"
             android:background="@drawable/et_custom"
+            android:fontFamily="@font/roboto_regular"
+            android:hint="@string/re_type_password"
+            android:inputType="textPassword"
+            android:padding="15dp"
             android:textSize="15sp" />
 
         <LinearLayout

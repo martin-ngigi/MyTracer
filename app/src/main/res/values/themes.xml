@@ -26,4 +26,12 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
+    <style name="DialogCustomTheme" parent="android:Theme.DeviceDefault.Dialog">
+        <item name="DialogTitleAppearance">@android:style/TextAppearance.Medium</item>
+        <!--<item name="DialogTitleText">LOADING…</item>-->
+        <item name="DialogSpotColor">@color/white</item>
+        <item name="DialogSpotCount">4</item>
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
 </resources>
