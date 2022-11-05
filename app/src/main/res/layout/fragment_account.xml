@@ -1,14 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.AccountFragment">
+    android:orientation="vertical"
+    tools:context=".fragments.ProfileFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Account Fragment" />
+        android:orientation="vertical"
+        >
 
-</FrameLayout>
+
+        <TextView
+            android:id="@+id/tv_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Update Profile"
+            android:textAlignment="center"
+            android:textSize="50sp"
+            android:layout_marginStart="25dp"
+            android:layout_marginBottom="5dp"
+            android:fontFamily="@font/indigo_daisy"
+            android:layout_marginTop="60dp"/>
+
+        <TextView
+            android:id="@+id/tv_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginBottom="50dp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="Change or Update the previous details"
+            android:textSize="17sp" />
+
+        <LinearLayout
+            android:id="@+id/layoutNamesP"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@id/tv_subtitle">
+
+            <EditText
+                android:id="@+id/et_first_nameP"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:hint="@string/first_name"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="10dp"
+                android:padding="15dp"
+                android:inputType="textPersonName"
+                android:fontFamily="@font/roboto_regular"
+                android:background="@drawable/et_custom"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/et_last_nameP"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:hint="@string/last_name"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="10dp"
+                android:padding="15dp"
+                android:inputType="textPersonName"
+                android:fontFamily="@font/roboto_regular"
+                android:background="@drawable/et_custom"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/et_phoneP"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/layoutNamesP"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/et_custom"
+            android:fontFamily="@font/roboto_regular"
+            android:hint="Phone"
+            android:inputType="textPhonetic"
+            android:padding="15dp"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/et_phone_backUpP"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/et_custom"
+            android:fontFamily="@font/roboto_regular"
+            android:hint="BackUp Phone"
+            android:inputType="textEmailAddress"
+            android:padding="15dp"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/et_emailP"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/et_custom"
+            android:fontFamily="@font/roboto_regular"
+            android:hint="@string/e_mail"
+            android:inputType="textEmailAddress"
+            android:padding="15dp"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/et_passwordP"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/et_custom"
+            android:fontFamily="@font/roboto_regular"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:padding="15dp"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/et_repasswordP"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="@string/re_type_password"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:padding="15dp"
+            android:fontFamily="@font/roboto_regular"
+            android:inputType="textPassword"
+            android:background="@drawable/et_custom"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/btn_updateP"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_custom"
+            android:fontFamily="@font/roboto_regular"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_centerInParent="true"
+            android:textColor="@android:color/white"
+            android:textAllCaps="false"
+            android:text="Update"/>
+
+
+
+
+    </LinearLayout>
+</ScrollView>

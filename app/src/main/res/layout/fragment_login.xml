@@ -80,11 +80,11 @@
         android:id="@+id/swipeRight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/swipe_left_for_register"
-        android:textSize="15sp"
-        android:fontFamily="@font/roboto_regular"
-        android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"/>
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="@font/roboto_regular"
+        android:text="@string/swipe_left_for_register"
+        android:textSize="15sp" />
 
 </RelativeLayout>
