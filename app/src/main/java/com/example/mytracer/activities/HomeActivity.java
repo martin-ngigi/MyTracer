@@ -15,8 +15,12 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.example.mytracer.Constants;
 import com.example.mytracer.R;
 import com.example.mytracer.fragments.SettingsFragment;
 import com.example.mytracer.fragments.AccountFragment;
@@ -33,6 +37,12 @@ public class HomeActivity extends AppCompatActivity {
     FrameLayout frameLayout;
     ActionBarDrawerToggle toggle;
 
+    //get Text views in header file
+    NavigationView myNavigationView;
+    View myHeaderView ;
+    ImageView imageview;
+    TextView fullNameTv, emailTv;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +58,21 @@ public class HomeActivity extends AppCompatActivity {
         frameLayout = findViewById(R.id.main_frameLayout);
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.navigation);
-
         //inflate the header view at runtime
         //View headerLayout = navigationView.inflateHeaderView(R.layout.header_file);
         //ImageView ivHeaderPhoto = headerLayout.findViewById(R.id.imageview);
+
+        //get Textviews and imageviews in header file
+        myNavigationView = (NavigationView) findViewById(R.id.navigation);
+        myHeaderView = navigationView.getHeaderView(0);
+        fullNameTv = (TextView) myHeaderView.findViewById(R.id.fullNameTv);
+        emailTv = (TextView) myHeaderView.findViewById(R.id.emailTv);
+        imageview = (ImageView) myHeaderView.findViewById(R.id.imageview);
+
+        //set user details in headerview
+        setUserDataInHeaderView();
+
+
 
         //setup drawer view
         setupDrawerContent(navigationView);
@@ -73,6 +94,18 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+    }
+
+    private void setUserDataInHeaderView() {
+        //get data from Constants.java
+        String email = Constants.email;
+        String fname = Constants.f_name;
+        String lname = Constants.l_name;
+
+        //set data to ui
+        emailTv.setText(email);
+        fullNameTv.setText(fname+" "+lname);
 
     }
 

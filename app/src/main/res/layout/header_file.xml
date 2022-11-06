@@ -16,7 +16,7 @@
         android:layout_marginTop="10dp"/>
 
     <TextView
-        android:id="@+id/textview"
+        android:id="@+id/fullNameTv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Full Name"
@@ -26,13 +26,14 @@
         app:layout_constraintTop_toBottomOf="@+id/imageview"/>
 
     <TextView
+        android:id="@+id/emailTv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="Email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textview"/>
+        app:layout_constraintTop_toBottomOf="@+id/fullNameTv"/>
 
     <ImageView
         android:layout_width="25dp"
