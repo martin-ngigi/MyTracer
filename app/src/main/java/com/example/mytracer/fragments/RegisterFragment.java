@@ -91,6 +91,7 @@ public class RegisterFragment extends Fragment {
         dialog = new SpotsDialog
                 .Builder()
                 .setContext(getContext())
+                .setTheme(R.style.DialogCustomTheme)
                 .setCancelable(false)
                 .setMessage("Please wait...")
                 .build();
@@ -212,6 +213,7 @@ public class RegisterFragment extends Fragment {
                     registerRlayout.setVisibility(View.GONE);
                     //show Success message
                     successLLayout.setVisibility(View.VISIBLE);
+                    successMessageTv.setText("Registration Successful.\n Proceed to Login...\n User ID:"+id+" As your login ID");
 
 
                 }
