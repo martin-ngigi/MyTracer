@@ -41,4 +41,8 @@ dependencies {
 
     //spots dialog
     implementation 'com.github.d-max:spots-dialog:1.1@aar'
+
+    implementation 'com.google.android.gms:play-services-location:21.0.0'
+
+
 }

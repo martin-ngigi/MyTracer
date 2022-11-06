@@ -1,9 +1,20 @@
 package com.example.mytracer.fragments;
 
+import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.text.TextUtils;
@@ -14,7 +25,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
@@ -27,13 +37,17 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.mytracer.Constants;
+import com.example.mytracer.MyLocation2;
 import com.example.mytracer.R;
 import com.example.mytracer.activities.HomeActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
+import java.util.Locale;
 
 import dmax.dialog.SpotsDialog;
 
@@ -88,21 +102,21 @@ public class LoginFragment extends Fragment {
         id = et_id.getText().toString();
 
 
-//        if (TextUtils.isEmpty(email)){
-//            et_email.setError("Email field is empty");
-//            et_email.setFocusable(true);
-//            return;//dont proceed
-//        }
-//        if (TextUtils.isEmpty(password)) {
-//            et_password.setError("Password field is empty");
-//            et_password.setFocusable(true);
-//            return;//dont proceed
-//        }
-//        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-//            et_email.setError("Email format is wrong. Enter Correct email.");
-//            et_email.setFocusable(true);
-//            return;
-//        }
+        if (TextUtils.isEmpty(email)){
+            et_email.setError("Email field is empty");
+            et_email.setFocusable(true);
+            return;//dont proceed
+        }
+        if (TextUtils.isEmpty(password)) {
+            et_password.setError("Password field is empty");
+            et_password.setFocusable(true);
+            return;//dont proceed
+        }
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            et_email.setError("Email format is wrong. Enter Correct email.");
+            et_email.setFocusable(true);
+            return;
+        }
 
         postDataLoginDataTOVolley();
     }
