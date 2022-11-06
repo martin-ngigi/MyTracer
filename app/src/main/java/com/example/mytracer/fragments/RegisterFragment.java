@@ -173,8 +173,13 @@ public class RegisterFragment extends Fragment {
             et_password.setFocusable(true);
             return;
         }
+        if (phone.equals(phone_backUp)){
+            et_phone_backUp.setError("Please use a different back up phone number");
+            et_phone_backUp.setFocusable(true);
+            return;
+        }
 
-        //postDataUsingVolley(fname, lname, phone, phone_backUp, email, password);
+        //postDataUsingVolleyJWT(fname, lname, phone, phone_backUp, email, password);
        // postData(fname, lname, phone, phone_backUp, email, password);
         postDataUsingVolley2(fname, lname, phone, phone_backUp, email, password);
     }
@@ -213,7 +218,7 @@ public class RegisterFragment extends Fragment {
                     registerRlayout.setVisibility(View.GONE);
                     //show Success message
                     successLLayout.setVisibility(View.VISIBLE);
-                    successMessageTv.setText("Registration Successful.\n Proceed to Login...\n User ID:"+id+" As your login ID");
+                    successMessageTv.setText("Registration Successful.\n Proceed to Login...\n Use ID:"+id+" As your login ID");
 
 
                 }
@@ -283,7 +288,7 @@ public class RegisterFragment extends Fragment {
     }
 
 
-    private void postDataUsingVolley(String fname, String lname, String phone, String phone_backUp, String email, String password) {
+    private void postDataUsingVolleyJWT(String fname, String lname, String phone, String phone_backUp, String email, String password) {
         dialog.setTitle("Posting data.");
         dialog.setMessage("Please wait...");
         dialog.show();
