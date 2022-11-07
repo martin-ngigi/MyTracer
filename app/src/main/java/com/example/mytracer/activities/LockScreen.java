@@ -5,9 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.app.admin.DevicePolicyManager;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,6 +17,10 @@ import android.widget.Toast;
 
 import com.example.mytracer.DeviceAdmin;
 import com.example.mytracer.R;
+import com.example.mytracer.broadcasts.ScreenReceiver;
+
+
+
 
 public class LockScreen extends AppCompatActivity {
 
@@ -28,6 +34,12 @@ public class LockScreen extends AppCompatActivity {
         setContentView(R.layout. activity_lock_screen ) ;
         btnEnable = findViewById(R.id. btnEnable ) ;
         btnLock = findViewById(R.id. btnLock ) ;
+
+        IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
+        filter.addAction(Intent.ACTION_SCREEN_OFF);
+        BroadcastReceiver mReceiver = new ScreenReceiver();
+        registerReceiver(mReceiver, filter);
+
         deviceManger = (DevicePolicyManager)
                 getSystemService(Context. DEVICE_POLICY_SERVICE ) ;
         compName = new ComponentName( this, DeviceAdmin. class ) ;
