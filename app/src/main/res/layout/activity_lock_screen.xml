@@ -30,5 +30,28 @@
             tools:ignore="OnClick" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Hello World!"
+        android:padding="10dp"
+        android:layout_margin="10dp"
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="START SERVICE"
+        android:layout_margin="10dp"
+        android:id="@+id/button1"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="STOP SERVICE"
+        android:layout_margin="10dp"
+        android:id="@+id/button2"/>
+
 
 </LinearLayout>

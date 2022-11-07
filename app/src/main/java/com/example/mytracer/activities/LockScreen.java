@@ -13,13 +13,15 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mytracer.DeviceAdmin;
 import com.example.mytracer.R;
 import com.example.mytracer.broadcasts.ScreenReceiver;
+import com.example.mytracer.service.MyService;
 
-
+import java.util.Date;
 
 
 public class LockScreen extends AppCompatActivity {
@@ -28,6 +30,9 @@ public class LockScreen extends AppCompatActivity {
     DevicePolicyManager deviceManger ;
     ComponentName compName ;
     Button btnEnable , btnLock ;
+
+    public static TextView textView;
+
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super .onCreate(savedInstanceState) ;
@@ -51,7 +56,30 @@ public class LockScreen extends AppCompatActivity {
             btnEnable .setText( "Enable" ) ;
             btnLock .setVisibility(View. GONE ) ;
         }
+
+        textView = findViewById(R.id.textView1);
+        Button button1 = findViewById(R.id.button1);
+        Button button2 = findViewById(R.id.button2);
+
+        textView.setText("Current Time: " + new Date());
+
+        Intent intent = new Intent(LockScreen.this, MyService.class);
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startService(intent);
+            }
+        });
+
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                stopService(intent);
+            }
+        });
+
     }
+
     public void enablePhone (View view) {
         boolean active = deviceManger .isAdminActive( compName ) ;
         if (active) {

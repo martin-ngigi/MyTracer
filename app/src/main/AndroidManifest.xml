@@ -76,6 +76,10 @@
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
             </intent-filter>
         </receiver>
+
+        <service android:name=".service.MyService"
+            android:exported="true"/>
+
     </application>
 
 </manifest>
