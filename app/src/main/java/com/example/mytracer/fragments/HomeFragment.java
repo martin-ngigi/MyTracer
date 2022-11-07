@@ -2,6 +2,7 @@ package com.example.mytracer.fragments;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -26,8 +27,11 @@ import com.example.mytracer.Constants;
 import com.example.mytracer.MyLocation2;
 import com.example.mytracer.R;
 import com.example.mytracer.activities.LocationActivity;
+import com.example.mytracer.activities.LockScreen;
+import com.example.mytracer.service.MyService;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -35,6 +39,9 @@ public class HomeFragment extends Fragment {
 
 
     private TextView textView, myLocationTv, myLocationTv2;
+
+    //public  static so that we can call timeServiceTv from MyService.java without necessarily creating object instance
+    public  static TextView timeServiceTv;
 
 
     LocationManager locationManager;
@@ -59,13 +66,22 @@ public class HomeFragment extends Fragment {
         textView = view.findViewById(R.id.textView);
         myLocationTv=view.findViewById(R.id.myLocationTv);
         myLocationTv2=view.findViewById(R.id.myLocationTv2);
+        timeServiceTv = view.findViewById(R.id.timeServiceTv);
 
         getLocation();
 
         getLocation2();
-
-
+        
+        startTimeService();
         return view;
+    }
+
+    private void startTimeService() {
+        timeServiceTv.setText("Current Time: " + new Date());
+        Intent intent = new Intent(getActivity(), MyService.class);
+        getActivity().startService(intent);// start Service
+        //getActivity().stopService(intent);//stop Service
+
     }
 
     private void getLocation2() {

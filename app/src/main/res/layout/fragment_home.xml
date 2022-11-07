@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".fragments.HomeFragment">
 
@@ -13,20 +14,103 @@
         android:layout_height="wrap_content"
         android:text="Home Fragment" />
 
-    <TextView
-        android:id="@+id/myLocationTv"
-        android:gravity="center"
-        android:layout_marginTop="50dp"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Loading location1....."/>
+        android:elevation="10dp"
+        app:cardCornerRadius="10dp"
+        android:padding="20dp"
+        android:background="@color/white"
+        android:layout_margin="10dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:layout_margin="20dp"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/myLocationTv2"
-        android:gravity="center"
-        android:layout_marginTop="100dp"
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:fontFamily="@font/roboto_black"
+                android:text="Location Details:"/>
+
+            <TextView
+                android:id="@+id/myLocationTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Loading location....."/>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Loading location2....."/>
+        android:elevation="10dp"
+        app:cardCornerRadius="10dp"
+        android:padding="10dp"
+        android:background="@color/white"
+        android:layout_margin="10dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:layout_margin="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:fontFamily="@font/roboto_black"
+                android:text="Coordinate Details:"/>
+
+            <TextView
+                android:id="@+id/myLocationTv2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Loading coordinate please wait..."
+                />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="10dp"
+        app:cardCornerRadius="10dp"
+        android:padding="10dp"
+        android:background="@color/white"
+        android:layout_margin="10dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:fontFamily="@font/roboto_black"
+                android:text="Time Service:"/>
+
+            <TextView
+                android:id="@+id/timeServiceTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Loading time, please wait....."
+                />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+
+
+
 
 </LinearLayout>
