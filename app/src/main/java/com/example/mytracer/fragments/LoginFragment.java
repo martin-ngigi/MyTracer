@@ -118,10 +118,10 @@ public class LoginFragment extends Fragment {
             return;
         }
 
-        postDataLoginDataTOVolley();
+        getDataLoginDataFromVolley();
     }
 
-    private void postDataLoginDataTOVolley() {
+    private void getDataLoginDataFromVolley() {
         dialog.setMessage("Login in progress...");
         dialog.show();
 
@@ -151,11 +151,12 @@ public class LoginFragment extends Fragment {
                     String password1 = respObj.getString("password");
                     String phone1 = respObj.getString("phone");
                     String backup_phone1 = respObj.getString("backup_phone");
+                    int userLocationID = respObj.getInt("userLocationID");
 
                     //String message = respObj.getString("email");
                     //Toast.makeText(getActivity(), "Response Message ID: "+id, Toast.LENGTH_LONG).show();
 
-                    loginCheck(id1, fname1, lname1, email1, password1, phone1, backup_phone1);
+                    loginCheck(id1, fname1, lname1, email1, password1, phone1, backup_phone1, userLocationID);
 
 
                 }
@@ -183,7 +184,7 @@ public class LoginFragment extends Fragment {
         queue.add(request);
     }
 
-    private void loginCheck(int id1, String fname1, String lname1, String email1, String password1, String phone1, String backup_phone1) {
+    private void loginCheck(int id1, String fname1, String lname1, String email1, String password1, String phone1, String backup_phone1, int userLocationID) {
         if (email.equals(email1) && password.equals(password1)){
             //save data to constants
             Constants.id = id1;
@@ -192,6 +193,8 @@ public class LoginFragment extends Fragment {
             Constants.email = email1;
             Constants.phone = phone1;
             Constants.backup_phone = backup_phone1;
+            Constants.password = password1;
+            Constants.userLocationID = userLocationID;
 
             //proceed to homepage
             startActivity(new Intent(getActivity(), HomeActivity.class));

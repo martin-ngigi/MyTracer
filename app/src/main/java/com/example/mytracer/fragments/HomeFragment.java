@@ -12,6 +12,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -23,6 +24,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.mytracer.Constants;
 import com.example.mytracer.MyLocation2;
 import com.example.mytracer.R;
@@ -31,12 +39,19 @@ import com.example.mytracer.activities.LockScreen;
 import com.example.mytracer.service.MyService;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class HomeFragment extends Fragment {
 
+    /**
+     * FLOW OF THE APP.
+     *
+     */
 
     private TextView textView, myLocationTv, myLocationTv2;
 
@@ -46,7 +61,6 @@ public class HomeFragment extends Fragment {
 
     LocationManager locationManager;
     LocationListener locationListener;
-
 
     public HomeFragment() {
         // Required empty public constructor
@@ -102,6 +116,8 @@ public class HomeFragment extends Fragment {
             return;
         }
         locationManager.requestLocationUpdates(
+                //check location after 2 second.
+                //if location changes by a distance of 2 metre, invoke locationListener
                 LocationManager.GPS_PROVIDER, 2000, 2, locationListener);
     }
 
@@ -113,6 +129,9 @@ public class HomeFragment extends Fragment {
             public void onLocationChanged(Location location) {
                 Log.i("Location",location.toString());
                 Log.i("GetAccuracy",""+location.getAccuracy());
+
+                //save location to db whenever it changes
+                //saveUserToDB(latitude1, longitude1);
 
                 myLocationTv.setText("Location: "+location.toString()+"\nGetAccuracy: "+location.getAccuracy()+"\nLatitude: "+location.getLatitude()+" Longitude: "+location.getLongitude());
             }
@@ -140,6 +159,65 @@ public class HomeFragment extends Fragment {
         }
     }
 
+    private void saveUserToDB(double latitude, double longitude) {
+        String baseUrl = Constants.baseUrl;
+        String url = baseUrl+"/locations/location/";
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Toast.makeText(getActivity(), "Response: "+response.toString(), Toast.LENGTH_SHORT).show();
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("HomeFragment", "Sending Location Error: "+error.getMessage() );
+                Toast.makeText(getActivity(), "Sending Location Error: "+error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> hashMap = new HashMap<>();
+                /**
+                 {
+                 "latitude": "28.8374",
+                 "longitude": "38.283",
+                 "date": "09-11-2022",
+                 "time": "05:52 PM",
+                 "user": 1
+                 }
+                 */
+
+
+                //get date
+                Date date = new Date();
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                String currentDate = simpleDateFormat.format(date);
+
+                String time = timeServiceTv.getText().toString();
+
+                hashMap.put("latitude", ""+latitude);
+                hashMap.put("longitude", ""+longitude);
+                hashMap.put("date",currentDate);
+                hashMap.put("time", time);
+                hashMap.put("user", ""+Constants.userLocationID); //Constants.userLocationID
+
+//                hashMap.put("latitude", "55.8374");
+//                hashMap.put("longitude", "55.256");
+//                hashMap.put("date","09-11-2022");
+//                hashMap.put("time", "09:49");
+//                hashMap.put("user", 7+""); //Constants.userLocationID
+
+                return hashMap;
+            }
+        };
+        requestQueue.add(request);
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -161,6 +239,8 @@ public class HomeFragment extends Fragment {
         Context context;
         @Override
         public void onLocationChanged(Location loc) {
+
+
             myLocationTv2.setText("Loading location....");
             //pb.setVisibility(View.INVISIBLE);
             Toast.makeText(
@@ -171,6 +251,12 @@ public class HomeFragment extends Fragment {
             Log.v("THIS", longitude);
             String latitude = "Latitude: " + loc.getLatitude();
             Log.v("THIS", latitude);
+
+            double latitude1 = loc.getLatitude();
+            double longitude1 = loc.getLongitude();
+
+            //save location to db whenever it changes
+            saveUserToDB(latitude1, longitude1);
 
             /*------- To get city name from coordinates -------- */
             String cityName = null;

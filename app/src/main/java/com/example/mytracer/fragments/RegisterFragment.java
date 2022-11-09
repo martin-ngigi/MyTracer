@@ -59,6 +59,23 @@ public class RegisterFragment extends Fragment {
 
     private AlertDialog dialog;
 
+    /**
+     * FLOW OF THE CODE:
+     * -----------------------------
+     * 1.Create User
+     * 1.1. Create User Object with normal credentials... ie {....}
+     * 1.2. Create User Object with a Location nested object  but with an empty userLocationID
+     *              {....
+     *                  "locations:"{
+     *
+     *                  }
+     *               }
+     * 2. Update userLocationID in the empty nested user Location in 1.2 above
+     *
+     *
+     *
+     */
+
     public RegisterFragment() {
         // Required empty public constructor
     }
@@ -184,6 +201,7 @@ public class RegisterFragment extends Fragment {
         postDataUsingVolley2(fname, lname, phone, phone_backUp, email, password);
     }
 
+    /**1.1. Create User Object with normal credentials... ie {....}**/
     private void postDataUsingVolley2(String fname, String lname, String phone, String phone_backUp, String email, String password) {
         dialog.setTitle("Posting data.");
         dialog.setMessage("Please wait...");
@@ -198,8 +216,7 @@ public class RegisterFragment extends Fragment {
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                //hide dialog
-                dialog.dismiss();
+
 
                 //Toast.makeText(getActivity(), "Response is :"+response.toString(), Toast.LENGTH_LONG).show();
                 try {
@@ -214,10 +231,10 @@ public class RegisterFragment extends Fragment {
 
                     Constants.id = id;
 
-                    //hide register layout
-                    registerRlayout.setVisibility(View.GONE);
-                    //show Success message
-                    successLLayout.setVisibility(View.VISIBLE);
+                    //create another user user so as the location details will be saved there
+                    createObjectLocationsUser( fname, lname, phone, phone_backUp, email, password);
+
+
                     successMessageTv.setText("Registration Successful.\n Proceed to Login...\n Use ID:"+id+" As your login ID");
 
 
@@ -274,7 +291,6 @@ public class RegisterFragment extends Fragment {
                 hashMap.put("phone",phone);
                 hashMap.put("first_name", fname);
                 hashMap.put("last_name", lname);
-                hashMap.put("username","afgh");
                 hashMap.put("password", password);
                 hashMap.put("backup_phone", phone_backUp);
 
@@ -287,6 +303,152 @@ public class RegisterFragment extends Fragment {
         queue.add(request);
     }
 
+    /**1.2. Create User Object with a Location nested object  but with an empty userLocationID**/
+    private void createObjectLocationsUser(String fname, String lname, String phone, String phone_backUp, String email, String password) {
+        String baseUrl = Constants.baseUrl;
+        String url = baseUrl+"/locations/users/";
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+
+                //Toast.makeText(getActivity(), "Response : "+response.toString(), Toast.LENGTH_SHORT).show();
+
+                try {
+
+                    JSONObject jsonObject = new JSONObject(response);
+                    //get id from response
+                    int userLocationID = jsonObject.getInt("id");
+                    //save the userLocation id to Constants
+                    Constants.userLocationID = userLocationID;
+                    
+                    //update in the main user database 
+                    updateuserLocationID(userLocationID);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getActivity(), "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //hide dialog
+                dialog.dismiss();
+
+                Log.e("HomeFragment", "onErrorResponse: "+error.getMessage() );
+                Toast.makeText(getActivity(), "Error: "+error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> hashMap = new HashMap<>();
+                /**
+                 * {
+                 *     "email": "martinwainaina001@gmail.com",
+                 *     "username": "martinwainaina",
+                 *     "phone": "0797292290",
+                 *     "first_name": "Martin",
+                 *     "last_name": "Wainaina",
+                 *     "password": "12345678",
+                 *     "backup_phone":"0712345678"
+                 * }
+                 */
+                hashMap.put("email", email);
+                hashMap.put("username", email);
+                hashMap.put("phone",phone);
+                hashMap.put("first_name", fname);
+                hashMap.put("last_name", lname);
+                hashMap.put("password", password);
+                hashMap.put("backup_phone", phone_backUp);
+
+                return hashMap;
+            }
+        };
+
+        requestQueue.add(request);
+    }
+
+    /**2. Update userLocationID in the empty nested user Location in 1.2 above*/
+    private void updateuserLocationID(int userLocationID) {
+        String baseURL = Constants.baseUrl;
+        String url = baseURL+"/accounts/users/"+Constants.id+"/";
+
+        RequestQueue queue = Volley.newRequestQueue(getActivity());
+
+        //PUT -> means Update
+        StringRequest request = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                //hide dialog
+                dialog.dismiss();
+
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    String userLocationID = jsonObject.getString("userLocationID");
+                    Toast.makeText(getActivity(), "userLocationID is : "+userLocationID, Toast.LENGTH_SHORT).show();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                //hide register layout
+                registerRlayout.setVisibility(View.GONE);
+                //show Success message
+                successLLayout.setVisibility(View.VISIBLE);
+                successMessageTv.setText("Registration Successful.\n Proceed to Login...\nUse [ "+Constants.id+" ] As your login ID");
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //hide dialog
+                dialog.dismiss();
+
+                Log.e("HomeFragment", "onErrorResponse: "+error.getMessage() );
+                Toast.makeText(getActivity(), "Error: "+error.getMessage(), Toast.LENGTH_SHORT).show();
+
+            }
+        }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> hashMap = new HashMap<>();
+
+                /**
+                 *{
+                 *     "id": 1,
+                 *     "first_name": "Martin",
+                 *     "last_name": "Wainaina",
+                 *     "email": "martinwainaina002@gmail.com",
+                 *     "phone": "0797292290",
+                 *     "password": "12345678",
+                 *     "username": "martinwainaina",
+                 *     "backup_phone": "0712345678",
+                 *     "registeredDate": "2022-11-09T17:08:20.952426Z",
+                 *     "userLocationID": 7
+                 * }
+                 */
+
+                hashMap.put("email", email);
+                hashMap.put("username", email);
+                hashMap.put("phone",phone);
+                hashMap.put("first_name", fname);
+                hashMap.put("last_name", lname);
+                hashMap.put("password", password);
+                hashMap.put("backup_phone", phone_backUp);
+                hashMap.put("userLocationID", ""+userLocationID); //WHAT WE ARE UPDATING
+
+                return hashMap;
+            }
+        };
+        queue.add(request);
+    }
 
     private void postDataUsingVolleyJWT(String fname, String lname, String phone, String phone_backUp, String email, String password) {
         dialog.setTitle("Posting data.");
