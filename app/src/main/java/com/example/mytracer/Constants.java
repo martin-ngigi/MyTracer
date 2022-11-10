@@ -1,7 +1,7 @@
 package com.example.mytracer;
 
 public class Constants {
-    public static String baseUrl = "https://0fa9-102-6-164-129.in.ngrok.io";
+    public static String baseUrl = "https://9c87-102-6-164-129.in.ngrok.io";
     public static int id;
     public static String f_name;
     public static String l_name;
