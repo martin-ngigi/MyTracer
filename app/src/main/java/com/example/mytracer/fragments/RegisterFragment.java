@@ -34,6 +34,8 @@ import com.android.volley.toolbox.Volley;
 import com.example.mytracer.Constants;
 import com.example.mytracer.R;
 import com.example.mytracer.activities.HomeActivity;
+import com.example.mytracer.interfaces.RegisterApi;
+import com.example.mytracer.models.UserModel;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,6 +45,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import dmax.dialog.SpotsDialog;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RegisterFragment extends Fragment {
 
@@ -63,14 +69,14 @@ public class RegisterFragment extends Fragment {
      * FLOW OF THE CODE:
      * -----------------------------
      * 1.Create User
-     * 1.1. Create User Object with normal credentials... ie {....}
-     * 1.2. Create User Object with a Location nested object  but with an empty userLocationID
+     * 1.1. Register/Create User Object with normal credentials... ie {....} using Retrofit and JWT (The reason why i used retrofit is because Volley gives a null response while using and JWT Registration.)
+     * 1.2. Create User Object using volley with a Location nested object  but with an empty userLocationID
      *              {....
      *                  "locations:"{
      *
      *                  }
      *               }
-     * 2. Update userLocationID in the empty nested user Location in 1.2 above
+     * 2. Update userLocationID in the empty nested user Location in 1.2 above... using volley
      *
      *
      *
@@ -196,13 +202,81 @@ public class RegisterFragment extends Fragment {
             return;
         }
 
-        //postDataUsingVolleyJWT(fname, lname, phone, phone_backUp, email, password);
-       // postData(fname, lname, phone, phone_backUp, email, password);
-        postDataUsingVolley2(fname, lname, phone, phone_backUp, email, password);
+        //registerUsingVolley();
+        registerWithRetrofitAndJWT();
+    }
+
+    private void registerWithRetrofitAndJWT() {
+        /**
+        API LINK: https://github.com/martin-ngigi/MyTracer-JWT-Django-API
+         */
+
+        dialog.setTitle("Posting Data...");
+        dialog.setMessage("Please wait");
+        dialog.show();
+
+        //create retrofit builder and pass the base url
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Constants.baseUrl+"/auth/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        //create instance of retrofit api class
+        RegisterApi registerApi = retrofit.create(RegisterApi.class);
+
+        //passing data from UI to model class
+        UserModel userModel = new UserModel(email, email, phone, fname, lname, password, phone_backUp);
+
+        //calling method to create a post and passing data to our modal class
+        Call<UserModel> call = registerApi.createPost(userModel);
+
+        //executing thr method
+        call.enqueue(new Callback<UserModel>() {
+            @Override
+            public void onResponse(Call<UserModel> call, retrofit2.Response<UserModel> response) {
+               //when the response is successful.
+                dialog.dismiss();
+
+                //Toast.makeText(getContext(), "Registration data added to API successfully.", Toast.LENGTH_SHORT).show();
+
+                //getting the response from the body and passing it to modal class
+                UserModel responseFromRegisterAPI = response.body();
+
+                //get id from response
+                int id = responseFromRegisterAPI.getId();
+                //save the id in constants
+                Constants.id = id;
+
+
+                String firstName = responseFromRegisterAPI.getFirst_name();
+                Toast.makeText(getContext(), "First Name: "+firstName+"\nID: "+id, Toast.LENGTH_SHORT).show();
+
+                //if the data is added successfully, use on the response variables to save the next user location details.
+                if (firstName.equals(firstName)){
+                    //create another user user so as the location details will be saved there
+
+                   // createObjectLocationsUserUsingVolley();
+
+
+                    //successMessageTv.setText("Registration Successful.\n Proceed to Login...\nContinue.");
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserModel> call, Throwable t) {
+                dialog.dismiss();
+                Toast.makeText(getContext(), "Error Has Occurred.\nHint: "+t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     /**1.1. Create User Object with normal credentials... ie {....}**/
-    private void postDataUsingVolley2(String fname, String lname, String phone, String phone_backUp, String email, String password) {
+    private void registerUsingVolley() {
+        /**
+         * GITHUB LINK TO API: https://github.com/martin-ngigi/MyTracer-Django-API
+         */
         dialog.setTitle("Posting data.");
         dialog.setMessage("Please wait...");
         dialog.show();
@@ -232,7 +306,7 @@ public class RegisterFragment extends Fragment {
                     Constants.id = id;
 
                     //create another user user so as the location details will be saved there
-                    createObjectLocationsUser( fname, lname, phone, phone_backUp, email, password);
+                    createObjectLocationsUserUsingVolley();
 
 
                     successMessageTv.setText("Registration Successful.\n Proceed to Login...\n Use ID:"+id+" As your login ID");
@@ -304,7 +378,7 @@ public class RegisterFragment extends Fragment {
     }
 
     /**1.2. Create User Object with a Location nested object  but with an empty userLocationID**/
-    private void createObjectLocationsUser(String fname, String lname, String phone, String phone_backUp, String email, String password) {
+    private void createObjectLocationsUserUsingVolley() {
         String baseUrl = Constants.baseUrl;
         String url = baseUrl+"/locations/users/";
 
@@ -326,7 +400,7 @@ public class RegisterFragment extends Fragment {
                     Constants.userLocationID = userLocationID;
                     
                     //update in the main user database 
-                    updateuserLocationID(userLocationID);
+                    updateUserLocationIDUsingVolley(userLocationID);
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Toast.makeText(getActivity(), "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -375,7 +449,7 @@ public class RegisterFragment extends Fragment {
     }
 
     /**2. Update userLocationID in the empty nested user Location in 1.2 above*/
-    private void updateuserLocationID(int userLocationID) {
+    private void updateUserLocationIDUsingVolley(int userLocationID) {
         String baseURL = Constants.baseUrl;
         String url = baseURL+"/accounts/users/"+Constants.id+"/";
 
@@ -450,101 +524,6 @@ public class RegisterFragment extends Fragment {
         queue.add(request);
     }
 
-    private void postDataUsingVolleyJWT(String fname, String lname, String phone, String phone_backUp, String email, String password) {
-        dialog.setTitle("Posting data.");
-        dialog.setMessage("Please wait...");
-        dialog.show();
-
-        RequestQueue queue = Volley.newRequestQueue(getContext());
-
-        String baseUrl = Constants.baseUrl;
-        //String url = baseUrl+"/auth/signup/";
-        String url = "https://0b1b-41-80-98-66.in.ngrok.io/auth/signup/";
-
-
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                //dismiss
-                dialog.dismiss();
-
-                Toast.makeText(getContext(), "My Success Response: "+response.toString(), Toast.LENGTH_LONG).show();
-
-
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    //String message = jsonObject.getString("message");
-                    String message = jsonObject.toString();
-                    //Toast.makeText(getContext(), "Success Response: "+message, Toast.LENGTH_LONG).show();
-
-                    //navigate to Login
-                    startActivity(new Intent(getContext(), HomeActivity.class));
-
-                }
-                catch (JSONException e){
-                    //dismiss
-                    dialog.dismiss();
-                    Log.e("RegisterFragment", "1. onResponse: Error"+e.getMessage());
-                    Toast.makeText(getContext(), "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //dismiss
-                dialog.dismiss();
-                //check for the response data in the VolleyError and parse it your self.
-                onErrorResponse2(error);
-                Log.e("RegisterFragment", "2. onResponse: Error"+error.getMessage());
-                Toast.makeText(getContext(), "Error: "+error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        }){
-            @Nullable
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-
-                HashMap <String, String> hashMap = new HashMap<>();
-                String username = email.replace("@gmail.com", "");
-
-                /**
-                 * {
-                 *     "email": "martinwainaina001@gmail.com",
-                 *     "username": "martinwainaina001",
-                 *     "phone": "0797292290",
-                 *     "first_name": "Martin",
-                 *     "last_name": "Wainaina",
-                 *     "password": "12345678",
-                 *     "backup_phone":"0712345678"
-                 * }
-                 */
-
-//                hashMap.put("email",email);
-//                hashMap.put("username",username);
-//                hashMap.put("phone",phone);
-//                hashMap.put("first_name",fname);
-//                hashMap.put("last_name",lname);
-//                hashMap.put("password",password);
-//                hashMap.put("backup_phone",phone_backUp);
-                hashMap.put("email","martinwainainaj@gmail.com");
-                hashMap.put("username","martinwainainaj");
-                hashMap.put("phone","0797292290");
-                hashMap.put("first_name","Martin");
-                hashMap.put("last_name","Wainaina");
-                hashMap.put("password","12345678");
-                hashMap.put("backup_phone","0712345678");
-
-
-                return hashMap;
-            }
-        };
-
-        queue.add(request);
-
-
-
-    }
-
     //check for the response data in the VolleyError and parse it your self.
     // import com.android.volley.toolbox.HttpHeaderParser;
     public void onErrorResponse2(VolleyError error) {
@@ -571,53 +550,4 @@ public class RegisterFragment extends Fragment {
         }
     }
 
-    // Post Request For JSONObject
-    public void postData(String fname, String lname, String phone, String phone_backUp, String email, String password) {
-
-        dialog.setTitle("Posting data.");
-        dialog.setMessage("Please wait...");
-        dialog.show();
-
-        String username = this.email.replace("@gmail.com", "");
-
-        String baseUrl = Constants.baseUrl;
-        String url = baseUrl+"/auth/signup/";
-
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-        JSONObject object = new JSONObject();
-        try {
-            object.put("email", email);
-            object.put("username",username);
-            object.put("phone", phone);
-            object.put("first_name", fname);
-            object.put("last_name", lname);
-            object.put("password", password);
-            object.put("backup_phone", phone_backUp);
-            //object.put("is_active", true);
-        } catch (JSONException e) {
-            e.printStackTrace();
-            //dismiss
-            dialog.dismiss();
-            Log.e("RegisterFragment", "onResponse: Error"+e.getMessage());
-            Toast.makeText(getContext(), "Error: "+e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, object,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Toast.makeText(getContext(), "Response: "+response.toString(), Toast.LENGTH_LONG).show();
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //dismiss
-                dialog.dismiss();
-                Log.e("RegisterFragment", "onResponse: Error"+error.getMessage());
-                Toast.makeText(getContext(), "Error: "+error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-        requestQueue.add(jsonObjectRequest);
-    }
 }

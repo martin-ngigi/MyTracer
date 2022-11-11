@@ -32,11 +32,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.mytracer.Constants;
-import com.example.mytracer.MyLocation2;
 import com.example.mytracer.R;
-import com.example.mytracer.activities.LocationActivity;
-import com.example.mytracer.activities.LockScreen;
-import com.example.mytracer.service.MyService;
+import com.example.mytracer.service.TimeService;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -92,7 +89,7 @@ public class HomeFragment extends Fragment {
 
     private void startTimeService() {
         timeServiceTv.setText("Current Time: " + new Date());
-        Intent intent = new Intent(getActivity(), MyService.class);
+        Intent intent = new Intent(getActivity(), TimeService.class);
         getActivity().startService(intent);// start Service
         //getActivity().stopService(intent);//stop Service
 

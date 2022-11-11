@@ -1,22 +1,22 @@
 package com.example.mytracer.models;
 
 public class RegisterObjectModel {
-    private UserRegisterModel registerModel;
+    private UserModel registerModel;
     private String message;
 
     public RegisterObjectModel() {
     }
 
-    public RegisterObjectModel(UserRegisterModel registerModel, String message) {
+    public RegisterObjectModel(UserModel registerModel, String message) {
         this.registerModel = registerModel;
         this.message = message;
     }
 
-    public UserRegisterModel getRegisterModel() {
+    public UserModel getRegisterModel() {
         return registerModel;
     }
 
-    public void setRegisterModel(UserRegisterModel registerModel) {
+    public void setRegisterModel(UserModel registerModel) {
         this.registerModel = registerModel;
     }
 

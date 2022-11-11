@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,7 +16,7 @@ import android.widget.Toast;
 import com.example.mytracer.Constants;
 import com.example.mytracer.R;
 import com.example.mytracer.interfaces.RegisterApi;
-import com.example.mytracer.models.UserRegisterModel;
+import com.example.mytracer.models.UserModel;
 
 import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
@@ -177,15 +176,15 @@ public class RegisterActivity extends AppCompatActivity {
 
         // passing data from our text fields to our modal class.
         //username
-        UserRegisterModel registerModel = new UserRegisterModel(email, email, phone, fname, lname, password, phone_backUp);
+        UserModel userModel = new UserModel(email, email, phone, fname, lname, password, phone_backUp);
 
         // calling a method to create a post and passing our modal class.
-        Call<UserRegisterModel> call = registerApi.createPost(registerModel);
+        Call<UserModel> call = registerApi.createPost(userModel);
 
         // on below line we are executing our method.
-        call.enqueue(new Callback<UserRegisterModel>() {
+        call.enqueue(new Callback<UserModel>() {
             @Override
-            public void onResponse(Call<UserRegisterModel> call, Response<UserRegisterModel> response) {
+            public void onResponse(Call<UserModel> call, Response<UserModel> response) {
                 // this method is called when we get response from our api.
                 Toast.makeText(RegisterActivity.this, "Data added to API", Toast.LENGTH_SHORT).show();
 
@@ -201,7 +200,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 // we are getting response from our body
                 // and passing it to our modal class.
-                UserRegisterModel responseRegisterFromAPI = response.body();
+                UserModel responseRegisterFromAPI = response.body();
 
                 // on below line we are getting our data from modal class and adding it to our string.
                 String responseString = "Response Code : " + response.code() + "\nfirst_name : " + responseRegisterFromAPI.getFirst_name() + "\n" + "last_name : " + responseRegisterFromAPI.getLast_name();
@@ -213,7 +212,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<UserRegisterModel> call, Throwable t) {
+            public void onFailure(Call<UserModel> call, Throwable t) {
                 // setting text to our text view when
                 // we get error response from API.
                 tv_subtitle.setText("Error found is : " + t.getMessage());

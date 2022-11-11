@@ -15,7 +15,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class MyService extends Service {
+public class TimeService extends Service {
 
     ScheduledExecutorService myschedule_executor;
 

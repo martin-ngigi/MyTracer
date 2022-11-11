@@ -19,7 +19,7 @@ import android.widget.Toast;
 import com.example.mytracer.DeviceAdmin;
 import com.example.mytracer.R;
 import com.example.mytracer.broadcasts.ScreenReceiver;
-import com.example.mytracer.service.MyService;
+import com.example.mytracer.service.TimeService;
 
 import java.util.Date;
 
@@ -63,7 +63,7 @@ public class LockScreen extends AppCompatActivity {
 
         textView.setText("Current Time: " + new Date());
 
-        Intent intent = new Intent(LockScreen.this, MyService.class);
+        Intent intent = new Intent(LockScreen.this, TimeService.class);
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
