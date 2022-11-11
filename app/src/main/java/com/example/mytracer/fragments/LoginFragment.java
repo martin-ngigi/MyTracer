@@ -13,6 +13,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -27,6 +28,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -40,16 +42,24 @@ import com.example.mytracer.Constants;
 import com.example.mytracer.MyLocation2;
 import com.example.mytracer.R;
 import com.example.mytracer.activities.HomeActivity;
+import com.example.mytracer.interfaces.RegisterApi;
+import com.example.mytracer.models.UserModel;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import dmax.dialog.SpotsDialog;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class LoginFragment extends Fragment {
@@ -118,10 +128,130 @@ public class LoginFragment extends Fragment {
             return;
         }
 
-        getDataLoginDataFromVolley();
+        //getDataLoginDataFromVolleyWithoutJWT();
+        loginWithVolleyAndJWT();
     }
 
-    private void getDataLoginDataFromVolley() {
+    private void loginWithVolleyAndJWT() {
+        dialog.setMessage("Login in progress...");
+        dialog.show();
+
+        String baseUrl = Constants.baseUrl;
+        String url = baseUrl+"/auth/login2/";
+
+        RequestQueue queue = Volley.newRequestQueue(getActivity());
+
+        //post data
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                //hide dialog
+                dialog.dismiss();
+
+                //Toast.makeText(getActivity(), "Response is :"+response.toString(), Toast.LENGTH_LONG).show();
+                try {
+                    //parsing the response to json object to extract data from it.
+
+                    //expected response
+                    /**
+                     {
+                     "message": "Login Successful",
+                     "refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY2ODIzOTc3MiwiaWF0IjoxNjY4MTUzMzcyLCJqdGkiOiIwOGQzOGMyZjRmMmQ0YzQ3YjBjOTQ1ZWM5MmQ0MDU2NSIsInVzZXJfaWQiOjF9.O6XlboSjo6nLTk93hlPEFk6o35C5MzigiPrDobo_WJo",
+                     "access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjY4MTYwNTcyLCJpYXQiOjE2NjgxNTMzNzIsImp0aSI6ImNmZGRiMDQ5M2ZmYjQwYTNhYjY0NzdmNjUyNTZmMjU4IiwidXNlcl9pZCI6MX0.IeIyouWbzk1izAKRJhbeUBaPCnScuSi3a9wwm2JuDEA",
+                     "user": {
+                             "id": 1,
+                             "first_name": "Martin",
+                             "last_name": "Wainaina",
+                             "email": "martinwainaina1@gmail.com",
+                             "date_of_birth": null,
+                             "phone": "0797292290",
+                             "backup_phone": "0712345678",
+                             "password": "pbkdf2_sha256$320000$uAVFZ7LcN6F6nr1mU4pyZU$8Ddekx2iDSFpKXYqVw+7EqiKDI3pZ+IqnJW2u1nx+4o=",
+                             "last_login": "2022-11-11T07:56:12.806598Z",
+                             "is_superuser": false,
+                             "is_active": true,
+                             "date_joined": "2022-11-11T07:50:05.100000Z",
+                             "groups": [],
+                             "user_permissions": []
+                             }
+                     }
+                     **/
+                    JSONObject respObj = new JSONObject(response);
+                    String message = respObj.getString("message");
+                    String refresh = respObj.getString("refresh");
+                    String access = respObj.getString("access");
+                    JSONObject userObject = respObj.getJSONObject("user");
+
+                    //extract data from json object response
+                    int id1 = userObject.getInt("id");
+                    String fname1 = userObject.getString("first_name");
+                    String lname1 = userObject.getString("last_name");
+                    String email1 = userObject.getString("email");
+                    String password1 = userObject.getString("password");
+                    String phone1 = userObject.getString("phone");
+                    String backup_phone1 = userObject.getString("backup_phone");
+                    //int userLocationID = userObject.getInt("userLocationID");
+
+                    Toast.makeText(getContext(), "Message: "+message+"\nEmail: "+email1, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getActivity(), "Response Message ID: "+id, Toast.LENGTH_LONG).show();
+
+                    //save data to constants
+                    Constants.id = id1;
+                    Constants.f_name= fname1;
+                    Constants.l_name = lname1;
+                    Constants.email = email1;
+                    Constants.phone = phone1;
+                    Constants.backup_phone = backup_phone1;
+                    Constants.password = password1;
+                    //Constants.userLocationID = userLocationID;
+
+                    //proceed to homepage
+                    startActivity(new Intent(getActivity(), HomeActivity.class));
+                    getActivity().finish();
+
+                }
+                catch (JSONException e){
+
+                    Log.e("VolleyError", "onErrorResponse: "+e.getMessage());
+                    e.printStackTrace();
+                    Toast.makeText(getActivity(), "1. Error: An error occurred.\nHint: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //hide dialog
+                dialog.dismiss();
+                //Handle errors
+                //check for the response data in the VolleyError and parse it your self.
+                onErrorResponse2(error);
+                Log.e("VolleyError", "2. onErrorResponse: "+error.getMessage());
+                Toast.makeText(getActivity(), "2. Error: Failed to get response. \nHint: "+ error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Nullable
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> hashMap = new HashMap<>();
+                /**
+                 {
+                 "email": "martinwainaina001@gmail.com",
+                 "username": "martinwainaina001@gmail.com",
+                 "password": "12345678"
+                 }
+                 */
+                hashMap.put("email", email);
+                hashMap.put("username", email);
+                hashMap.put("password", password);
+                return hashMap;
+            }
+        };
+
+        //make a json request
+        queue.add(request);
+    }
+
+    private void getDataLoginDataFromVolleyWithoutJWT() {
         dialog.setMessage("Login in progress...");
         dialog.show();
 
