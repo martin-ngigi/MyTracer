@@ -120,7 +120,7 @@ public class LoginFragment extends Fragment {
         if (TextUtils.isEmpty(password)) {
             et_password.setError("Password field is empty");
             et_password.setFocusable(true);
-            return;//dont proceed
+            return;//don't proceed
         }
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
             et_email.setError("Email format is wrong. Enter Correct email.");
