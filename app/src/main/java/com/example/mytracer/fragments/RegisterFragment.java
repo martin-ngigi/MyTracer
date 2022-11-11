@@ -255,10 +255,14 @@ public class RegisterFragment extends Fragment {
                 if (firstName.equals(firstName)){
                     //create another user user so as the location details will be saved there
 
-                   // createObjectLocationsUserUsingVolley();
+                    successMessageTv.setText("Registration Successful.\n Proceed to Login...\nContinue.");
 
+                    //hide register layout
+                    registerRlayout.setVisibility(View.GONE);
+                    //show Success message
+                    successLLayout.setVisibility(View.VISIBLE);
+                    successMessageTv.setText("Registration Successful.\n Proceed to Login...\nUse [ "+Constants.id+" ] As your login ID");
 
-                    //successMessageTv.setText("Registration Successful.\n Proceed to Login...\nContinue.");
 
                 }
             }
